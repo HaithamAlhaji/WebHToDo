@@ -1,0 +1,28 @@
+@import "../variables";
+.jumbotron {
+  background-color: $color2;
+  color: $color5;
+  text-align: center;
+}
+#logo {
+  background-image: url("/img/og_image.png");
+  background-clip: content-box;
+  background-origin: content-box;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 150px;
+  height: 150px;
+  background-color: whitesmoke;
+  text-align: center;
+  margin: 10px auto;
+  border-radius: 15px 15px 0px 0px;
+}
+
+.topicBox > .topicContainer {
+  background-color: white;
+  margin: 5px;
+}
+footer {
+  background-color: $color5;
+}
