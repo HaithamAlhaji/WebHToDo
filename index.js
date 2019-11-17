@@ -8,7 +8,11 @@ const constants = require("./config/constants"),
   i18n = require("i18n"),
   favicon = require("serve-favicon"),
   home = require("./routes/home/index"),
+  admin = require("./routes/admin/index"),
   path = require("path");
+// ,
+// multer = require("multer"),
+// uuid = require("uuid/v4")
 
 // Definiations
 var isConfigReady = false;
@@ -42,6 +46,20 @@ mysqlConnection.getConnection((err, connection) => {
   });
 });
 const app = express();
+// global.uuid = uuid;
+// const diskStorage = multer.diskStorage({
+//   destination: "./public/uploads/",
+//   filename: (req, file, callback) => {
+//     console.log(file.originalname);
+//   },
+//   filefilter: (req, file, callback) => {}
+// });
+// global.multer = multer;
+// upload = multer({
+//   storage: diskStorage,
+//   limits: { fileSize: 1 * 1000 * 1000 }
+// });
+// global.upload = upload;
 app.set("view engine", "handlebars");
 app.engine(
   "handlebars",
@@ -60,7 +78,6 @@ app.engine(
     }
   })
 );
-
 // Middlewares
 
 // Express Uses
@@ -77,16 +94,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use("/", home);
+app.use("/admin", admin);
 // Starting Server
 app.on("ready", () => {
   // Multilingual
   i18n.configure({
     locales: ["en", "ar", "tr", "ku"],
     directory: path.join(__dirname, "public", "/locales"),
+    queryParameter: "lang",
     register: global,
     defaultLocale: global.defaultConfig.websiteLanguage || "en"
   });
-
   app.listen(constants.express.port, () => {
     console.info("Server is started");
   });

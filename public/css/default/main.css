@@ -24,3 +24,23 @@ html[lang="en"] body {
   font-family: "Cairo", sans-serif;
   direction: ltr;
 }
+
+.text-color1 {
+  color: #078c74;
+}
+
+.text-color2 {
+  color: #06735f;
+}
+
+.text-color3 {
+  color: #f2884b;
+}
+
+.text-color4 {
+  color: #d96248;
+}
+
+.text-color5 {
+  color: #a64444;
+}

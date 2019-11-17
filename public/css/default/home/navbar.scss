@@ -1,18 +1,54 @@
 @import "../variables";
+.navbar {
+  background: linear-gradient(270deg, $color1, $color3);
+  background-size: 400% 400%;
 
-nav {
-  a {
-    color: $color5;
-    transition: all 0.5s;
-    &:hover {
-      background-color: $color1;
-      color: $color5;
+  -webkit-animation: AnimationName 30s ease infinite;
+  -moz-animation: AnimationName 30s ease infinite;
+  animation: AnimationName 30s ease infinite;
+
+  @-webkit-keyframes AnimationName {
+    0% {
+      background-position: 0% 50%;
     }
-    &.disabled {
-      background-color: red;
-      color: $color1;
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
     }
   }
-  background-color: $color2;
-  color: $color5;
+  @-moz-keyframes AnimationName {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  @keyframes AnimationName {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  a {
+    color: white;
+    transition: all 0.2s;
+
+    &:hover {
+      color: $color3;
+    }
+  }
+  a.dropdown-item {
+    color: $color3;
+  }
 }
