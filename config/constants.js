@@ -13,8 +13,8 @@ module.exports = {
     database: process.env.mysql_database
   },
   app: {
-    description: "RIHLand website",
-    keywords: "RIHLand,RIH Land, rihland, rih land",
+    description: "HToDo website",
+    keywords: "ToDo,HToDo, htodo,H ToDo",
     author: "Haitham Alhaji",
     image: "website_img.png"
   }
