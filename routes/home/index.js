@@ -23,6 +23,7 @@ router.all("*", (req, res, next) => {
 
   next();
 });
+
 router.get("/", (req, res) => {
   res.render("home/index", {
     title: global.__("home")
@@ -81,9 +82,9 @@ router.post(
   ),
   (req, res) => {
     if (req.form.isValid) {
-      const sqlLogin =
-        "select * from tbl_users where email = ? and password = ?";
       mysqlConnection.getConnection((err, connection) => {
+        const sqlLogin =
+          "select * from tbl_users where email = ? and password = ?";
         connection.query(
           sqlLogin,
           [req.body.txtEmail, req.body.txtPassword],
