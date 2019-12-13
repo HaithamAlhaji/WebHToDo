@@ -36,7 +36,8 @@
 
                 <div class="form-label-group">
                     <textarea id="txtTask" name="txtTask" class="form-control" rows="3"
-                        placeholder="{{texts "whatsup"}}" required></textarea>
+                        placeholder="{{texts "whatsup"}}"
+                        {{#ifEquals (default "isSecured") "true"}}required{{/ifEquals}}></textarea>
                 </div>
 
                 <p class="card-text"></p>

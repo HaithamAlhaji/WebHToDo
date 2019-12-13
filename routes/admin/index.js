@@ -25,4 +25,38 @@ router.get("/", (req, res) => {
   });
 });
 
+router.get("/settings", (req, res) => {
+  if (req.session.user === undefined || req.session.user.userType != "2") {
+    res.redirect("/login");
+    //res.send("401 Authorization Error");
+    return;
+  }
+  res.render("admin/settings", {
+    title: global.__("settings"),
+    settings: global.defaultConfig
+  });
+});
+router.post("/settings", (req, res) => {
+  if (req.session.user === undefined || req.session.user.userType != "2") {
+    res.redirect("/login");
+    //res.send("401 Authorization Error");
+    return;
+  }
+  const isSecured = req.body.isSecured;
+  const sqlGetTasks =
+    "update tbl_config set value = ? where name = 'isSecured';";
+  mysqlConnection.getConnection((err, connection) => {
+    connection.query(sqlGetTasks, [isSecured], (errors, results, fields) => {
+      global.defaultConfig.isSecured = isSecured;
+      connection.release();
+      //res.status(200).end();
+    });
+  });
+
+  res.render("admin/settings", {
+    title: global.__("settings"),
+    settings: global.defaultConfig
+  });
+});
+
 module.exports = router;

@@ -15,31 +15,35 @@
                             <div class="col-6">
                                 <div class="form-label-group">
                                     <input type="text" id="txtFirstName" name="txtFirstName" class="form-control"
-                                        placeholder="First Name" required>
+                                        placeholder="First Name"
+                                        {{#ifEquals (default "isSecured") "true"}}required{{/ifEquals}}>
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-label-group">
                                     <input type="text" id="txtLastName" name="txtLastName" class="form-control"
-                                        placeholder="Last Name" required>
+                                        placeholder="Last Name"
+                                        {{#ifEquals (default "isSecured") "true"}}required{{/ifEquals}}>
 
                                 </div>
                             </div>
                         </div>
                         <div class="form-label-group">
                             <input type="email" id="txtEmail" name="txtEmail" class="form-control"
-                                placeholder="Email address" required>
+                                placeholder="Email address"
+                                {{#ifEquals (default "isSecured") "true"}}required{{/ifEquals}}>
 
                         </div>
 
 
                         <div class="form-label-group">
                             <input type="password" id="txtPassword" name="txtPassword" class="form-control"
-                                placeholder="Password" required>
+                                placeholder="Password" {{#ifEquals (default "isSecured") "true"}}required{{/ifEquals}}>
                         </div>
                         <div class="form-label-group">
                             <input type="password" id="txtPasswordConfirmation" name="txtPasswordConfirmation"
-                                class="form-control" placeholder="Password Confirmation" required>
+                                class="form-control" placeholder="Password Confirmation"
+                                {{#ifEquals (default "isSecured") "true"}}required{{/ifEquals}}>
                         </div>
 
                         <button id="btnRegister" class="btn btn-lg btn-block text-uppercase"

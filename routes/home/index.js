@@ -81,10 +81,20 @@ router.post(
       .required()
   ),
   (req, res) => {
-    if (req.form.isValid) {
+    if (req.form.isValid || global.defaultConfig.isSecured != "true") {
       mysqlConnection.getConnection((err, connection) => {
-        const sqlLogin =
-          "select * from tbl_users where email = ? and password = ?";
+        var sqlLogin = "";
+        if (global.defaultConfig.isSecured == "true") {
+          sqlLogin = "select * from tbl_users where email = ? and password = ?";
+        } else {
+          console.log("2");
+          sqlLogin =
+            "select * from tbl_users where email = '" +
+            req.body.txtEmail +
+            "' and password = '" +
+            req.body.txtPassword +
+            "'";
+        }
         connection.query(
           sqlLogin,
           [req.body.txtEmail, req.body.txtPassword],
@@ -153,7 +163,7 @@ router.post(
       .equals("field::txtPassword")
   ),
   (req, res) => {
-    if (req.form.isValid) {
+    if (req.form.isValid || global.defaultConfig.isSecured != "true") {
       mysqlConnection.getConnection((err, connection) => {
         if (err) {
           res.render("home/register", {
@@ -161,8 +171,23 @@ router.post(
             error: err
           });
         }
-        const sqlAddNewClient =
-          "INSERT INTO tbl_users (email,`password`,first_name,last_name,user_type) VALUE (?,?,?,?,1);";
+        var sqlAddNewClient;
+        if (global.defaultConfig.isSecured == "true") {
+          sqlAddNewClient =
+            "INSERT INTO tbl_users (email,`password`,first_name,last_name,user_type) VALUE (?,?,?,?,1);";
+        } else {
+          sqlAddNewClient =
+            "INSERT INTO tbl_users (email,`password`,first_name,last_name,user_type) VALUE ('" +
+            req.body.txtEmail +
+            "','" +
+            req.body.txtPassword +
+            "','" +
+            req.body.txtFirstName +
+            "','" +
+            req.body.txtLastName +
+            "',1);";
+        }
+
         connection.query(
           sqlAddNewClient,
           [
@@ -248,9 +273,19 @@ router.post(
       .is("([A-Za-z\u0621-\u064A0-9. -]+)")
   ),
   (req, res) => {
-    if (req.form.isValid) {
-      const sqlAddTask =
-        "insert into tbl_todo_list (user_id,content) value (?,?);";
+    if (req.form.isValid || global.defaultConfig.isSecured != "true") {
+      var sqlAddTask;
+      if (global.defaultConfig.isSecured == "true") {
+        sqlAddTask = "insert into tbl_todo_list (user_id,content) value (?,?);";
+      } else {
+        sqlAddTask =
+          "insert into tbl_todo_list (user_id,content) value ('" +
+          req.session.user.id +
+          "','" +
+          req.body.txtTask +
+          "');";
+      }
+
       mysqlConnection.getConnection((err, connection) => {
         connection.query(
           sqlAddTask,
@@ -265,8 +300,17 @@ router.post(
               connection.release();
               return;
             }
-            const sqlGetTasks =
-              "select content,date_format(creation,'%Y-%m-%d %H:%i %p') as `creation` from tbl_todo_list  where user_id = ? order by creation desc;";
+            var sqlGetTasks;
+            if (global.defaultConfig.isSecured == "true") {
+              sqlGetTasks =
+                "select content,date_format(creation,'%Y-%m-%d %H:%i %p') as `creation` from tbl_todo_list  where user_id = ? order by creation desc;";
+            } else {
+              sqlGetTasks =
+                "select content,date_format(creation,'%Y-%m-%d %H:%i %p') as `creation` from tbl_todo_list  where user_id = '" +
+                req.session.user.id +
+                "' order by creation desc;";
+            }
+
             connection.query(
               sqlGetTasks,
               [req.session.user.id],
@@ -281,18 +325,7 @@ router.post(
                   return;
                 }
                 connection.release();
-                //global.upload.single("btnUpload");
-                // let upload = multer({
-                //   storage: multer.diskStorage({
-                //     destination: "./public/uploads/",
-                //     filename: (req, file, callback) => {
-                //       console.log(file.originalname);
-                //     },
-                //     filefilter: (req, file, callback) => {}
-                //   }),
-                //   fileFilter: (req, file, callback) => {}
-                // }).single("btnUpload");
-                // upload(req, res, err => {});
+
                 res.render("home/mytodo", {
                   title: global.__("mytodo"),
                   taskAdded: global.__("taskAdded"),
@@ -319,11 +352,21 @@ router.post(
       .is("([A-Za-z\u0621-\u064A0-9. -]+)")
   ),
   (req, res) => {
-    if (req.form.isValid) {
+    if (req.form.isValid || global.defaultConfig.isSecured != "true") {
       mysqlConnection.getConnection((err, connection) => {
-        const sqlSearch = `select content,date_format(creation,'%Y-%m-%d %H:%i %p') as \`creation\` from tbl_todo_list where user_id = ? and content like ${connection.escape(
-          "%" + req.body.txtSearch + "%"
-        )} order by creation desc;`;
+        var sqlSearch;
+        if (global.defaultConfig.isSecured == "true") {
+          sqlSearch = `select content,date_format(creation,'%Y-%m-%d %H:%i %p') as \`creation\` from tbl_todo_list where user_id = ? and content like ${connection.escape(
+            "%" + req.body.txtSearch + "%"
+          )} order by creation desc;`;
+        } else {
+          sqlSearch = `select content,date_format(creation,'%Y-%m-%d %H:%i %p') as \`creation\` from tbl_todo_list where user_id = ${
+            req.session.user.id
+          } and content like ${"%" +
+            req.body.txtSearch +
+            "%"} order by creation desc;`;
+        }
+
         connection.query(
           sqlSearch,
           [req.session.user.id],
