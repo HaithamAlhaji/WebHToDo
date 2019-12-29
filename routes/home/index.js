@@ -1,7 +1,10 @@
 const express = require("express"),
   form = require("express-form"),
   field = form.field,
+  csurf = require("csurf"),
   router = express.Router();
+
+router.use(csurf());
 
 router.all("*", (req, res, next) => {
   res.app.locals.layout = "home/index";
@@ -66,7 +69,8 @@ router.get("/mytodo", (req, res) => {
 });
 router.get("/login", (req, res) => {
   res.render("home/login", {
-    title: global.__("login")
+    title: global.__("login"),
+    csrf: req.csrfToken()
   });
 });
 router.post(
@@ -136,7 +140,8 @@ router.post(
 );
 router.get("/register", (req, res) => {
   res.render("home/register", {
-    title: global.__("register")
+    title: global.__("register"),
+    csrf: req.csrfToken()
   });
 });
 router.post(

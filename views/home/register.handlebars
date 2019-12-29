@@ -45,7 +45,7 @@
                                 class="form-control" placeholder="Password Confirmation"
                                 {{#ifEquals (default "isSecured") "true"}}required{{/ifEquals}}>
                         </div>
-
+                        <input type="hidden" name="_csrf" value="{{csrf}}" />
                         <button id="btnRegister" class="btn btn-lg btn-block text-uppercase"
                             type="submit">{{texts "register"}}</button>
 

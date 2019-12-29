@@ -79,20 +79,22 @@ app.engine(
   })
 );
 // Middlewares
-
 // Express Uses
-app.use(
-  expressSession({
-    secret: constants.express.secret,
-    resave: true,
-    saveUninitialized: true
-  })
-);
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(favicon(path.join(__dirname, "/favicon.ico")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(
+  expressSession({
+    secret: constants.express.secret,
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
+//app.use(csurfMiddleware());
 app.use("/", home);
 app.use("/admin", admin);
 // Starting Server
